@@ -3,8 +3,13 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.sass']
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'dxcc-tracker-ui';
+  title = 'DXCC Tracker';
+  loadedFeature = '';
+
+  onNavigate(feature: string) {
+    this.loadedFeature = feature;
+  }
 }
