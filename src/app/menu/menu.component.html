@@ -12,26 +12,26 @@
     <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#" (click)="show('dxcc-state')">DXCC State</a>
+          <a class="nav-link" aria-current="page" href="#" (click)="show('dxcc-state')">{{ 'MENU.DXCC' | translate }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="#" (click)="show('qso-mgmt')">QSO management</a>
+          <a class="nav-link" href="#" (click)="show('qso-mgmt')">{{ 'MENU.QSO' | translate }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="#" (click)="show('filter-mgmt')">DX Cluster filters</a>
+          <a class="nav-link" href="#" (click)="show('filter-mgmt')">{{ 'MENU.CLUSTER' | translate }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="#" (click)="show('notifications')">DX Notifications</a>
+          <a class="nav-link" href="#" (click)="show('notifications')">{{ 'MENU.NOTIFICATION' | translate }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="#" (click)="show('user-profile')">Profile</a>
+          <a class="nav-link" href="#" (click)="show('user-profile')">{{ 'MENU.SETTINGS' | translate }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" (click)="show('administration')">Administration</a>
+          <a class="nav-link" href="#" (click)="show('administration')">{{ 'MENU.ADMIN' | translate }}</a>
         </li>
         <li class="nav-item">
-          <label>
-            {{ 'HOME.SELECT' | translate }}
+          <label class="col-xs-3 col-sm-auto col-form-label">
+            {{ 'MENU.LANG' | translate }}
             <select #langSelect (change)="translate.use(langSelect.value)">
               <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
             </select>

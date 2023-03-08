@@ -1,6 +1,11 @@
 {
-    "HOME": {
-      "TITLE": "Hello Angular with ngx-translate!",
-      "SELECT": "Change language"
+    "MENU": {
+      "DXCC": "DXCC Table",
+      "QSO": "Your QSOs",
+      "CLUSTER": "DX Cluster",
+      "NOTIFICATION": "Notifications",
+      "SETTINGS": "Settings",
+      "ADMIN": "Administration",
+      "LANG": "Language"
     }
-  }
+}
