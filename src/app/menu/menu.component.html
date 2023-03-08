@@ -29,6 +29,14 @@
         <li class="nav-item">
           <a class="nav-link" href="#" (click)="show('administration')">Administration</a>
         </li>
+        <li class="nav-item">
+          <label>
+            {{ 'HOME.SELECT' | translate }}
+            <select #langSelect (change)="translate.use(langSelect.value)">
+              <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
+            </select>
+          </label>
+        </li>
       </ul>
     </div>
   </div>
