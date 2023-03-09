@@ -7,5 +7,9 @@
       "SETTINGS": "Settings",
       "ADMIN": "Administration",
       "LANG": "Language"
+    },
+    "DXCC": {
+      "TITLE": "DXCC Table"
     }
+
 }
