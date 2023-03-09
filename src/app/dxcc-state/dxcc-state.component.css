@@ -1,3 +1,7 @@
+td:hover {
+  background-color: yellow;
+}
+
 .center-bold-blue {
     margin: auto;
     width: 50%;
