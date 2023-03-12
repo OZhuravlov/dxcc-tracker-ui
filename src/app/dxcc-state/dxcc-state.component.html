@@ -1,101 +1,64 @@
 <form>
     <div class="mb-3 row">
-      <div class="col-xs-3 col-sm-auto"><h2>{{ 'DXCC.TITLE' | translate }}</h2></div>
-      <div class="col-xs-3 col-sm-auto loader">
-        <mat-progress-spinner [mode]="'indeterminate'" *ngIf="loading$ | async"></mat-progress-spinner>
-      </div>
+        <div class="col-xs-3 col-sm-auto">
+            <h2>{{ 'DXCC.TITLE' | translate }}</h2>
+        </div>
+        <div class="col-xs-3 col-sm-auto loader">
+            <mat-progress-spinner [mode]="'indeterminate'" *ngIf="loading$ | async"></mat-progress-spinner>
+        </div>
     </div>
     <div class="mb-3 row">
-      <label for="table-complete-search" class="col-xs-3 col-sm-auto col-form-label">Filter</label>
-      <div class="col-xs-3 col-sm-auto">
-        <input id="table-complete-search" type="text" class="form-control" name="searchTerm" [(ngModel)]="searchTerm">
-      </div>
+        <label for="table-complete-search" class="col-xs-3 col-sm-auto col-form-label">Filter</label>
+        <div class="col-xs-3 col-sm-auto">
+            <input id="table-complete-search" type="text" class="form-control" name="searchTerm"
+                [(ngModel)]="searchTerm">
+        </div>
     </div>
-  
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Prefix</th>
-        <th scope="col">DXCC name</th>
-        <th scope="col">{{band._160M}}</th>
-        <th scope="col">{{band._80M}}</th>
-        <th scope="col">{{band._40M}}</th>
-        <th scope="col">{{band._30M}}</th>
-        <th scope="col">{{band._20M}}</th>
-        <th scope="col">{{band._17M}}</th>
-        <th scope="col">{{band._15M}}</th>
-        <th scope="col">{{band._12M}}</th>
-        <th scope="col">{{band._10M}}</th>
-        <th scope="col">{{band._6M}}</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let dxccRow of dxccRows | paginate: { itemsPerPage: pageSize,
-                                                        currentPage: page,
-                                                        totalItems: total }"
-          (click)="onSelect(dxccRow)"
-          style="cursor: pointer"
-          [ngClass]="{'data-selected': selectedDxccRow && dxccRow.countryId === selectedDxccRow.countryId}"
-      >
-        <th scope="row">{{ dxccRow.countryId }}</th>
-        <td>
-          <ngb-highlight [result]="dxccRow.countryPrefix" [term]="searchTerm"></ngb-highlight>
-        </td>
-        <td>
-          <ngb-highlight [result]="dxccRow.countryName" [term]="searchTerm"></ngb-highlight>
-        </td>
-        <td>
-          <ngb-highlight [result]="getConfirmed(dxccRow, band._160M)"></ngb-highlight>
-        </td>
-        <td>
-            <ngb-highlight [result]="getConfirmed(dxccRow, band._80M)"></ngb-highlight>
-        </td>
-        <td>
-            <ngb-highlight [result]="getConfirmed(dxccRow, band._40M)"></ngb-highlight>
-        </td>
-        <td>
-            <ngb-highlight [result]="getConfirmed(dxccRow, band._30M)"></ngb-highlight>
-        </td>
-        <td>
-            <ngb-highlight [result]="getConfirmed(dxccRow, band._20M)"></ngb-highlight>
-        </td>
-        <td>
-            <ngb-highlight [result]="getConfirmed(dxccRow, band._17M)"></ngb-highlight>
-        </td>
-        <td>
-            <ngb-highlight [result]="getConfirmed(dxccRow, band._15M)"></ngb-highlight>
-        </td>
-        <td>
-            <ngb-highlight [result]="getConfirmed(dxccRow, band._12M)"></ngb-highlight>
-        </td>
-        <td>
-            <ngb-highlight [result]="getConfirmed(dxccRow, band._10M)"></ngb-highlight>
-        </td>
-        <td>
-            <ngb-highlight [result]="getConfirmed(dxccRow, band._6M)"></ngb-highlight>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  
-    <div class="d-flex justify-content-between p-2">
-      <pagination-controls
-        previousLabel="Prev"
-        nextLabel="Next"
-        (pageChange)="handlePageChange($event)"
-      ></pagination-controls>
-  
-      <select class="form-select" style="width: auto" name="pageSize"
-              [(ngModel)]="pageSize"
-              (change)="handlePageSizeChange($event)"
-      >
-        <option *ngFor="let size of pageSizes" [value]="size">{{size}} items per page</option>
-      </select>
-    </div>
-  </form>
 
-  <!--  
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Prefix</th>
+                <th scope="col">DXCC name</th>
+                <th *ngFor="let band of bands" scope="col">{{band}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let dxccRow of dxccRows | paginate: { itemsPerPage: pageSize,
+                                                        currentPage: page,
+                                                        totalItems: total };
+                  let index=index" (click)="onSelect(dxccRow)" style="cursor: pointer"
+                [ngClass]="{'data-selected': selectedDxccRow && dxccRow.countryId === selectedDxccRow.countryId}">
+                <th scope="row">{{ index + 1 }}</th>
+                <td>
+                    <ngb-highlight [result]="dxccRow.countryPrefix" [term]="searchTerm"></ngb-highlight>
+                </td>
+                <td>
+                    <ngb-highlight [result]="dxccRow.countryName" [term]="searchTerm"></ngb-highlight>
+                </td>
+                <td *ngFor="let band of bands" class='hover-text' [ngClass]="getCallSigns(dxccRow, band) != ''? 'hover-text mark-triagle' : 'hover-text'">
+                    <div>
+                        <ngb-highlight [result]="getConfirmed(dxccRow, band)"></ngb-highlight>
+                    </div>
+                    <span *ngIf="getCallSigns(dxccRow, band) != ''" class='tooltip-text' [innerText]="getCallSigns(dxccRow, band)"></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between p-2">
+        <pagination-controls previousLabel="Prev" nextLabel="Next"
+            (pageChange)="handlePageChange($event)"></pagination-controls>
+
+        <select class="form-select" style="width: auto" name="pageSize" [(ngModel)]="pageSize"
+            (change)="handlePageSizeChange($event)">
+            <option *ngFor="let size of pageSizes" [value]="size">{{size}} items per page</option>
+        </select>
+    </div>
+</form>
+
+<!--  
   <ng-template #infoModal let-modal>
     <div class="modal-header">
       <h2 class="modal-title" id="modal-basic-title">Station info</h2>

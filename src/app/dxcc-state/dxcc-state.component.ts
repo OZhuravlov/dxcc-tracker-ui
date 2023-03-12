@@ -6,15 +6,15 @@ import { DxccStateService } from '../core/service/dxcc-state.service';
 import {LoadingService} from "../core/service/loading.service";
 import { Band } from '../core/shared/band';
 import { Confirmation } from '../core/shared/confirmation';
+import { BandType } from '../core/shared/band-type';
 
 @Component({
   selector: 'app-dxcc-state',
   templateUrl: './dxcc-state.component.html',
   styleUrls: ['./dxcc-state.component.css']
 })
-export class DxccStateComponent implements OnInit {
 
-  band = Band;
+export class DxccStateComponent implements OnInit {
   dxccRows: DxccRowData[] = [];
   pageSizes: number[] = Constants.PAGE_SIZES;
   pageSize = Constants.DEFAULT_PAGE_SIZE;
@@ -22,6 +22,7 @@ export class DxccStateComponent implements OnInit {
   page = 1;
   selectedDxccRow!: DxccRowData;
   loading$ = this.loader.loading$;
+  bands;
 
   private _searchTerm: string = '';
   private _closeResult!: string;
@@ -29,6 +30,9 @@ export class DxccStateComponent implements OnInit {
   constructor(private dxccStateService: DxccStateService,
               //private modalService: NgbModal,
               private loader: LoadingService) {
+      this.bands = Object.values(Band)
+      .filter(band => band["bandType"] == BandType.HF)
+      .map(band => band["band"]);
   }
 
   ngOnInit(): void {
@@ -52,15 +56,18 @@ export class DxccStateComponent implements OnInit {
   }
 
   getConfirmed(dxccRow: DxccRowData, band: Band) {
-     if (dxccRow && dxccRow.confirmations && dxccRow.confirmations.get(band)){
+     if (dxccRow && dxccRow.confirmations && dxccRow.confirmations.get(band) && dxccRow.confirmations.get(band)?.confirmed){
       return dxccRow.countryPrefix;
      }
-     return "";
+     return '';
   }
 
-  joinStations(stationNames: string[] | undefined) {
-    return stationNames ? stationNames.join(',\n') : '';
-  }
+  getCallSigns(dxccRow: DxccRowData, band: Band) {
+    if (dxccRow && dxccRow.confirmations && dxccRow.confirmations.get(band)){
+     return dxccRow.confirmations.get(band)?.confirmed ? '' : dxccRow.confirmations.get(band)?.calls;
+    }
+    return '';
+ }
 
   get searchTerm() {
     return this._searchTerm;
