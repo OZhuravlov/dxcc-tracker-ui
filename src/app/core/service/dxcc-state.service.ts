@@ -8,19 +8,19 @@ import { environment } from "../../../environments/environment";
 })
 export class DxccStateService {
   private _baseUrl = environment.apiURL + '/dxcc';
-  private _dxccTableUrl = this._baseUrl + '/table';
+  private _dxccTableUrl = this._baseUrl + '/all-table?callsignGroupId=1';
 
   constructor(private http: HttpClient) {
   }
 
   public getDxccTable(params: any): Observable<any> {
-    const stub = new Observable<any>((observer) => {
+    //const stub = new Observable<any>((observer) => {
       // observable execution
-      observer.next(this.getStubResponse());
-    })
-    return stub;
-    //    return this.http.get<any>(this._dxccTableUrl, {params})
-    //      .pipe();
+//      observer.next(this.getStubResponse());
+  //  })
+//    return stub;
+        return this.http.get<any>(this._dxccTableUrl, {params})
+         .pipe();
   }
   getStubResponse(): {} {
     return JSON.parse(`{

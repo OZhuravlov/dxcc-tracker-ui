@@ -21,7 +21,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Prefix</th>
                 <th scope="col">DXCC name</th>
-                <th *ngFor="let band of bands" scope="col">{{band}}</th>
+                <th *ngFor="let band of bands" scope="col" class="cell-center">{{band}}</th>
             </tr>
         </thead>
         <tbody>
@@ -37,7 +37,7 @@
                 <td>
                     <ngb-highlight [result]="dxccRow.countryName" [term]="searchTerm"></ngb-highlight>
                 </td>
-                <td *ngFor="let band of bands" class='hover-text' [ngClass]="getCallSigns(dxccRow, band) != ''? 'hover-text mark-triagle' : 'hover-text'">
+                <td *ngFor="let band of bands"  class="cell-center hover-text" [ngClass]="getCallSigns(dxccRow, band) != ''? 'mark-triagle' : ''">
                     <div>
                         <ngb-highlight [result]="getConfirmed(dxccRow, band)"></ngb-highlight>
                     </div>

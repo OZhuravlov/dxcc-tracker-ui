@@ -64,7 +64,7 @@ export class DxccStateComponent implements OnInit {
 
   getCallSigns(dxccRow: DxccRowData, band: Band) {
     if (dxccRow && dxccRow.confirmations && dxccRow.confirmations.get(band)){
-     return dxccRow.confirmations.get(band)?.confirmed ? '' : dxccRow.confirmations.get(band)?.calls;
+     return dxccRow.confirmations.get(band)?.confirmed ? '' : dxccRow.confirmations.get(band)?.calls||'';
     }
     return '';
  }
@@ -84,9 +84,8 @@ export class DxccStateComponent implements OnInit {
     this.dxccStateService.getDxccTable(params)
       .subscribe({
         next: response => {
-          const {content, totalElements} = response;
-          this.dxccRows = this._getDxccRows(content);
-          this.total = totalElements;
+          this.dxccRows = this._getDxccRows(response);
+          this.total = response.length;
         },
         error: (e) => console.error(e)
       });
