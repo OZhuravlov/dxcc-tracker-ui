@@ -9,6 +9,11 @@
       "LANG": "Мова"
     },
     "DXCC": {
-      "TITLE": "Таблиця DXCC"
+      "TITLE": "Таблиця DXCC",
+      "TABLE": {
+        "PREFIX": "Префікс",
+        "DXCC-NAME": "DXCC територія",
+        "ROWS-PER-PAGE": "рядків на сторінці"
+      }
     }
 }

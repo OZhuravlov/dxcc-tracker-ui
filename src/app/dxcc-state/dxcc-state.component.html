@@ -15,19 +15,17 @@
         </div>
     </div>
 
-    <table class="table table-striped">
+    <table class="table table-sm table-striped table-bordered table-responsive-md">
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Prefix</th>
-                <th scope="col">DXCC name</th>
+                <th scope="col">{{ 'DXCC.TABLE.PREFIX' | translate }}</th>
+                <th scope="col">{{ 'DXCC.TABLE.DXCC-NAME' | translate }}</th>
                 <th *ngFor="let band of bands" scope="col" class="cell-center">{{band}}</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let dxccRow of dxccRows | paginate: { itemsPerPage: pageSize,
-                                                        currentPage: page,
-                                                        totalItems: total };
+            <tr *ngFor="let dxccRow of filteredDxccRows;
                   let index=index" (click)="onSelect(dxccRow)" style="cursor: pointer"
                 [ngClass]="{'data-selected': selectedDxccRow && dxccRow.countryId === selectedDxccRow.countryId}">
                 <th scope="row">{{ index + 1 }}</th>
@@ -37,7 +35,7 @@
                 <td>
                     <ngb-highlight [result]="dxccRow.countryName" [term]="searchTerm"></ngb-highlight>
                 </td>
-                <td *ngFor="let band of bands"  class="cell-center hover-text" [ngClass]="getCallSigns(dxccRow, band) != ''? 'mark-triagle' : ''">
+                <td *ngFor="let band of bands"  class="cell-center hover-text" [ngClass]="getConfirmed(dxccRow, band)? 'cell-confirmed' : getCallSigns(dxccRow, band) != ''? 'mark-triagle' : ''">
                     <div>
                         <ngb-highlight [result]="getConfirmed(dxccRow, band)"></ngb-highlight>
                     </div>
@@ -47,15 +45,17 @@
         </tbody>
     </table>
 
+    <!--
     <div class="d-flex justify-content-between p-2">
         <pagination-controls previousLabel="Prev" nextLabel="Next"
             (pageChange)="handlePageChange($event)"></pagination-controls>
 
         <select class="form-select" style="width: auto" name="pageSize" [(ngModel)]="pageSize"
             (change)="handlePageSizeChange($event)">
-            <option *ngFor="let size of pageSizes" [value]="size">{{size}} items per page</option>
+            <option *ngFor="let size of pageSizes" [value]="size">{{size}} {{ 'DXCC.TABLE.ROWS-PER-PAGE' | translate }}</option>
         </select>
     </div>
+    -->
 </form>
 
 <!--  

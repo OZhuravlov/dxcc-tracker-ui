@@ -3,7 +3,7 @@ import { DxccRowData } from '../core/shared/dxcc-row-data';
 import { Constants } from '../core/shared/constants';
 import { DxccStateService } from '../core/service/dxcc-state.service';
 //import { ModalDismissReasons, NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import {LoadingService} from "../core/service/loading.service";
+import { LoadingService } from "../core/service/loading.service";
 import { Band } from '../core/shared/band';
 import { Confirmation } from '../core/shared/confirmation';
 import { BandType } from '../core/shared/band-type';
@@ -16,6 +16,7 @@ import { BandType } from '../core/shared/band-type';
 
 export class DxccStateComponent implements OnInit {
   dxccRows: DxccRowData[] = [];
+  filteredDxccRows: DxccRowData[] = [];
   pageSizes: number[] = Constants.PAGE_SIZES;
   pageSize = Constants.DEFAULT_PAGE_SIZE;
   total = 0;
@@ -64,7 +65,7 @@ export class DxccStateComponent implements OnInit {
 
   getCallSigns(dxccRow: DxccRowData, band: Band) {
     if (dxccRow && dxccRow.confirmations && dxccRow.confirmations.get(band)){
-     return dxccRow.confirmations.get(band)?.confirmed ? '' : dxccRow.confirmations.get(band)?.calls||'';
+     return dxccRow.confirmations.get(band)?.confirmed ? '' : dxccRow.confirmations.get(band)?.calls;
     }
     return '';
  }
@@ -74,8 +75,19 @@ export class DxccStateComponent implements OnInit {
   }
 
   set searchTerm(searchTerm: string) {
-    this._searchTerm = searchTerm;
-    this.retrieveDxccTable();
+    this._searchTerm = searchTerm.trim();
+    if (!this._searchTerm || this._searchTerm.length <= 1) {
+      this.filteredDxccRows = this.dxccRows;
+    }
+    this.filteredDxccRows = this.dxccRows.filter(row => 
+      row.countryPrefix.toLocaleLowerCase().includes(this._searchTerm.toLocaleLowerCase())
+      || row.countryName.toLocaleLowerCase().includes(this._searchTerm.toLocaleLowerCase())
+      || (row.confirmations 
+           && row.confirmations.values() 
+           && Array.from(row.confirmations.values())
+                   .find(conf => conf.calls && conf.calls.toLocaleLowerCase().includes(this._searchTerm.toLocaleLowerCase()))
+        )
+      );
   }
 
   private retrieveDxccTable(): void {
@@ -85,6 +97,7 @@ export class DxccStateComponent implements OnInit {
       .subscribe({
         next: response => {
           this.dxccRows = this._getDxccRows(response);
+          this.filteredDxccRows = this.dxccRows;
           this.total = response.length;
         },
         error: (e) => console.error(e)

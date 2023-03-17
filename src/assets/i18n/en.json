@@ -9,7 +9,11 @@
       "LANG": "Language"
     },
     "DXCC": {
-      "TITLE": "DXCC Table"
+      "TITLE": "DXCC Table",
+      "TABLE": {
+        "PREFIX": "Prefix",
+        "DXCC-NAME": "DXCC Entity",
+        "ROWS-PER-PAGE": "items per page"
+      }
     }
-
 }

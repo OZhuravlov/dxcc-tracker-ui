@@ -4,11 +4,14 @@ td:hover {
 
 .cell-center {
   text-align: center;
-  border: 1px solid grey;
+}
+
+.cell-confirmed {
+  background-color: rgb(180, 185, 227);
 }
 
 .mark-triagle {
-  background-color: rgb(180, 227, 213);
+  background-color: rgb(227, 208, 180);
   background-image: linear-gradient(225deg, red, red 10px, transparent 10px, transparent);
 }
 
